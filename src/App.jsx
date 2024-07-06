@@ -19,16 +19,22 @@ function App() {
   const [noData, setNoData] = useState(false);
   const [loadMoreBtn, setLoadMoreBtn] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState({});
 
   async function getImages(searchQuery, page) {
     try {
       setError(false);
       setLoading(true);
       setNoData(false);
+      setLoadMoreBtn(false)
       setSearchQuery(searchQuery);
       setPage(page);
+      if (page === 1) {
+        setImages([]);
+      }
+      
       const response = await fetchData(searchQuery, page);
-      console.log(response);
+   
       page > 1
         ? setImages([...images, ...response.results])
         : setImages([...response.results]);
@@ -44,16 +50,18 @@ function App() {
     }
   }
 
+  function openModal(image) {
+    setIsModalOpen(true);
+    setModalContent(image);
+  }
+
   ReactModal.setAppElement('#root');
 
   return (
     <>
       <SearchBar getImages={getImages}></SearchBar>
       {images.length > 0 && (
-        <ImageGallery
-          images={images}
-          openModal={() => setIsModalOpen(true)}
-        ></ImageGallery>
+        <ImageGallery images={images} openModal={openModal}></ImageGallery>
       )}
       {loading && (
         <Grid
@@ -75,7 +83,7 @@ function App() {
           page={page + 1}
         ></LoadMoreBtn>
       )}
-      {
+      {isModalOpen && (
         <ReactModal
           isOpen={isModalOpen}
           shouldCloseOnEsc={true}
@@ -86,8 +94,13 @@ function App() {
               backgroundColor: '#20201fba',
             },
           }}
-        ></ReactModal>
-      }
+        >
+          <img
+            src={modalContent.urls.regular}
+            alt={modalContent.alt_description}
+          />
+        </ReactModal>
+      )}
     </>
   );
 }

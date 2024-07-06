@@ -1,6 +1,10 @@
 .header {
     height: 46px;
     background-color: rgb(43, 43, 148);
+    position: fixed;
+    z-index: 3;
+    width: 100%;
+    top: 0;
 }
 
 .form {
