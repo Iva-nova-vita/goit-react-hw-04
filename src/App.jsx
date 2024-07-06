@@ -3,6 +3,7 @@ import './App.css';
 
 import { useState } from 'react';
 import fetchData from './assets/utilities/fetchData';
+import ImageGallery from './assets/components/ImageGallery/ImageGallery';
 
 function App() {
   const [images, setImages] = useState([]);
@@ -15,7 +16,7 @@ function App() {
       setLoading(true);
       const response = await fetchData(topic)
       console.log(response)
-      setImages(response);
+      setImages(response.results);
     } catch (error) {
       console.log(error, 'error')
       setError(true);
@@ -27,6 +28,7 @@ function App() {
   return (
     <>
       <SearchBar onSubmit={getImages}></SearchBar>
+      <ImageGallery images={images}></ImageGallery>
       {loading && <p>Loading...</p>}
       {error && <p>Something went wrong... Please try again</p>}
     </>
