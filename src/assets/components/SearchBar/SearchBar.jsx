@@ -1,3 +1,5 @@
+import toast, { Toaster } from 'react-hot-toast';
+
 export default function SearchBar({ onSubmit }) {
     function handleSubmit(e) {
         e.preventDefault();
@@ -5,7 +7,14 @@ export default function SearchBar({ onSubmit }) {
         if (topic.trim() !== '') {
             onSubmit(topic);
         } else {
-          alert('The search field can not be empty!');
+            toast('The search field can not be empty!',{
+                
+                style: {
+                  borderRadius: '10px',
+                  background: '#333',
+                  color: '#fff',
+                },
+              });
         }
       }
   return (
@@ -18,6 +27,7 @@ export default function SearchBar({ onSubmit }) {
           autoFocus
           placeholder='Search images and photos'
         />
+        <Toaster />
         <button type='submit'>
           Search
         </button>
