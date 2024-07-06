@@ -1,4 +1,5 @@
 import css from './ImageGallery.module.css'
+import ImageCard from '../ImageCard/ImageCard';
 
 export default function ImageGallery({ images }) {
   console.log(images, 'images');
@@ -7,7 +8,7 @@ export default function ImageGallery({ images }) {
       {images.map((item) => {
         return (
           <li className={css.galleryItem} key={item.id}>
-            <img src={item.urls.small} alt={item.alt_description} />
+            <ImageCard image={item}></ImageCard>
           </li>
         );
       })}
