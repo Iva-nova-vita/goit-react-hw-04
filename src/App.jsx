@@ -4,11 +4,11 @@ import { useState } from 'react';
 import { Grid } from 'react-loader-spinner';
 import ReactModal from 'react-modal';
 
-import fetchData from './assets/utilities/fetchData';
-import SearchBar from './assets/components/SearchBar/SearchBar';
-import ImageGallery from './assets/components/ImageGallery/ImageGallery';
-import ErrorMessage from './assets/components/ErrorMessage/ErrorMessage';
-import LoadMoreBtn from './assets/components/LoadMoreBtn/LoadMoreBtn';
+import fetchData from './utilities/fetchData';
+import SearchBar from './components/SearchBar/SearchBar';
+import ImageGallery from './components/ImageGallery/ImageGallery';
+import ErrorMessage from './components/ErrorMessage/ErrorMessage';
+import LoadMoreBtn from './components/LoadMoreBtn/LoadMoreBtn';
 
 function App() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -26,15 +26,15 @@ function App() {
       setError(false);
       setLoading(true);
       setNoData(false);
-      setLoadMoreBtn(false)
+      setLoadMoreBtn(false);
       setSearchQuery(searchQuery);
       setPage(page);
       if (page === 1) {
         setImages([]);
       }
-      
+
       const response = await fetchData(searchQuery, page);
-   
+
       page > 1
         ? setImages([...images, ...response.results])
         : setImages([...response.results]);
@@ -60,47 +60,50 @@ function App() {
   return (
     <>
       <SearchBar getImages={getImages}></SearchBar>
-      {images.length > 0 && (
-        <ImageGallery images={images} openModal={openModal}></ImageGallery>
-      )}
-      {loading && (
-        <Grid
-          visible={true}
-          height='80'
-          width='80'
-          color='#2b2b94'
-          ariaLabel='grid-loading'
-          radius='12.5'
-          wrapperClass='grid-wrapper'
-        />
-      )}
-      {error && <ErrorMessage />}
-      {noData && <p>No data on your request</p>}
-      {loadMoreBtn && (
-        <LoadMoreBtn
-          getImages={getImages}
-          searchQuery={searchQuery}
-          page={page + 1}
-        ></LoadMoreBtn>
-      )}
-      {isModalOpen && (
-        <ReactModal
-          isOpen={isModalOpen}
-          shouldCloseOnEsc={true}
-          shouldCloseOnOverlayClick={true}
-          onRequestClose={() => setIsModalOpen(false)}
-          style={{
-            overlay: {
-              backgroundColor: '#20201fba',
-            },
-          }}
-        >
-          <img
-            src={modalContent.urls.regular}
-            alt={modalContent.alt_description}
+
+      <section className='mainContent'>
+        {images.length > 0 && (
+          <ImageGallery images={images} openModal={openModal}></ImageGallery>
+        )}
+        {loading && (
+          <Grid
+            visible={true}
+            height='80'
+            width='80'
+            color='#2b2b94'
+            ariaLabel='grid-loading'
+            radius='12.5'
+            wrapperClass='grid-wrapper'
           />
-        </ReactModal>
-      )}
+        )}
+        {error && <ErrorMessage />}
+        {noData && <p>No data on your request</p>}
+        {loadMoreBtn && (
+          <LoadMoreBtn
+            getImages={getImages}
+            searchQuery={searchQuery}
+            page={page + 1}
+          ></LoadMoreBtn>
+        )}
+        {isModalOpen && (
+          <ReactModal
+            isOpen={isModalOpen}
+            shouldCloseOnEsc={true}
+            shouldCloseOnOverlayClick={true}
+            onRequestClose={() => setIsModalOpen(false)}
+            style={{
+              overlay: {
+                backgroundColor: '#20201fba',
+              },
+            }}
+          >
+            <img
+              src={modalContent.urls.regular}
+              alt={modalContent.alt_description}
+            />
+          </ReactModal>
+        )}
+      </section>
     </>
   );
 }
