@@ -44,20 +44,16 @@ function App() {
     }
   }
 
-  function openModal() {
-    setIsModalOpen(true);
-  }
-
-  function closeModal() {
-    setIsModalOpen(false);
-  }
   ReactModal.setAppElement('#root');
 
   return (
     <>
       <SearchBar getImages={getImages}></SearchBar>
       {images.length > 0 && (
-        <ImageGallery images={images} openModal={openModal}></ImageGallery>
+        <ImageGallery
+          images={images}
+          openModal={() => setIsModalOpen(true)}
+        ></ImageGallery>
       )}
       {loading && (
         <Grid
@@ -79,14 +75,19 @@ function App() {
           page={page + 1}
         ></LoadMoreBtn>
       )}
-      <ReactModal
-        isOpen={isModalOpen}
-        shouldCloseOnEsc={true}
-        shouldCloseOnOverlayClick={true}
-        onRequestClose={closeModal}
-      >
-        
-      </ReactModal>
+      {
+        <ReactModal
+          isOpen={isModalOpen}
+          shouldCloseOnEsc={true}
+          shouldCloseOnOverlayClick={true}
+          onRequestClose={() => setIsModalOpen(false)}
+          style={{
+            overlay: {
+              backgroundColor: '#20201fba',
+            },
+          }}
+        ></ReactModal>
+      }
     </>
   );
 }
