@@ -5,6 +5,7 @@ import { useState } from 'react';
 import fetchData from './assets/utilities/fetchData';
 import ImageGallery from './assets/components/ImageGallery/ImageGallery';
 import { Grid } from 'react-loader-spinner';
+import ErrorMessage from './assets/components/ErrorMessage/ErrorMessage'
 
 function App() {
   const [images, setImages] = useState([]);
@@ -42,7 +43,7 @@ function App() {
           wrapperClass='grid-wrapper'
         />
       )}
-      {error && <p>Something went wrong... Please try again</p>}
+      {error && <ErrorMessage/>}
     </>
   );
 }
