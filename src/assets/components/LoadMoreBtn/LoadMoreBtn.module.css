@@ -1,0 +1,12 @@
+.btnLoadMore {
+    border: none;
+    background-color: rgb(131, 131, 187);
+    color: white;
+    height: 30px;
+    margin: 9px 16px;
+    border-radius: 4px;
+    padding: 0 16px;
+    cursor: pointer;
+    margin: 0 auto;
+    display: block;
+}

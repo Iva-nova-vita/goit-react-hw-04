@@ -1,10 +1,12 @@
-import toast, { Toaster } from 'react-hot-toast';
 import css from './SearchBar.module.css';
 
-export default function SearchBar({ onSubmit }) {
+import toast, { Toaster } from 'react-hot-toast';
+
+export default function SearchBar({ getImages }) {
   function handleSubmit(e) {
     e.preventDefault();
-    const topic = e.target.elements.search.value.trim();
+    const form = e.target
+    const topic = form.elements.search.value.trim();
     if (!topic) {
       toast('The search field can not be empty!', {
         style: {
@@ -15,7 +17,8 @@ export default function SearchBar({ onSubmit }) {
       });
       return;
     }
-    onSubmit(topic);
+    getImages(topic, 1);
+    form.reset()
   }
   return (
     <header className={css.header}>
