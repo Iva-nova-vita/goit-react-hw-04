@@ -14,27 +14,19 @@ function App() {
       setError(false);
       setLoading(true);
       const response = await fetchData(topic)
-      setImages(response.data);
+      console.log(response)
+      setImages(response);
     } catch (error) {
+      console.log(error, 'error')
       setError(true);
     } finally {
       setLoading(false);
     }
   }
 
-  function onSubmit(e) {
-    e.preventDefault();
-    const topic = e.target.elements.search.value;
-    if (topic.trim !== '') {
-      getImages(topic);
-    } else {
-      alert('The search field can not be empty!');
-    }
-  }
-
   return (
     <>
-      <SearchBar onSubmit={onSubmit}></SearchBar>
+      <SearchBar onSubmit={getImages}></SearchBar>
       {loading && <p>Loading...</p>}
       {error && <p>Something went wrong... Please try again</p>}
     </>

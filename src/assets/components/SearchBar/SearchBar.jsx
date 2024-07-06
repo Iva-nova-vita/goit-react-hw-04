@@ -1,8 +1,16 @@
 export default function SearchBar({ onSubmit }) {
-    console.log(onSubmit)
+    function handleSubmit(e) {
+        e.preventDefault();
+        const topic = e.target.elements.search.value;
+        if (topic.trim() !== '') {
+            onSubmit(topic);
+        } else {
+          alert('The search field can not be empty!');
+        }
+      }
   return (
     <header>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={handleSubmit}>
         <input
           name='search'
           type='text'
