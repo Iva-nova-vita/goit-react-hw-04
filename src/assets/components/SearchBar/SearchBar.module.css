@@ -26,11 +26,15 @@
 
 .btnSubmit {
     border: none;
-    background-color: rgb(131, 131, 187);
+    background-color: #9696d5;
     color: white;
     height: 30px;
     margin: 9px 16px;
     border-radius: 4px;
     padding: 0 16px;
     cursor: pointer;
+
+    &:hover {
+        background-color: #8c8ccc;
+    }
 }

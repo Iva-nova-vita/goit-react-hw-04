@@ -1,6 +1,6 @@
 .btnLoadMore {
     border: none;
-    background-color: rgb(131, 131, 187);
+    background-color: #9696d5;
     color: white;
     height: 30px;
     margin: 9px 16px;
@@ -9,4 +9,8 @@
     cursor: pointer;
     margin: 0 auto;
     display: block;
+
+    &:hover {
+        background-color: #8c8ccc;
+    }
 }
