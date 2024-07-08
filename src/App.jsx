@@ -2,13 +2,13 @@ import './App.css';
 
 import { useState } from 'react';
 import { Grid } from 'react-loader-spinner';
-import ReactModal from 'react-modal';
 
 import fetchData from './utilities/fetchData';
 import SearchBar from './components/SearchBar/SearchBar';
 import ImageGallery from './components/ImageGallery/ImageGallery';
 import ErrorMessage from './components/ErrorMessage/ErrorMessage';
 import LoadMoreBtn from './components/LoadMoreBtn/LoadMoreBtn';
+import ImageModal from './components/ImageModal/ImageModal';
 
 function App() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -55,7 +55,9 @@ function App() {
     setModalContent(image);
   }
 
-  ReactModal.setAppElement('#root');
+  function closeModal() {
+    setIsModalOpen(false);
+  }
 
   return (
     <>
@@ -86,22 +88,11 @@ function App() {
           ></LoadMoreBtn>
         )}
         {isModalOpen && (
-          <ReactModal
-            isOpen={isModalOpen}
-            shouldCloseOnEsc={true}
-            shouldCloseOnOverlayClick={true}
-            onRequestClose={() => setIsModalOpen(false)}
-            style={{
-              overlay: {
-                backgroundColor: '#20201fba',
-              },
-            }}
-          >
-            <img
-              src={modalContent.urls.regular}
-              alt={modalContent.alt_description}
-            />
-          </ReactModal>
+          <ImageModal
+            isModalOpen={isModalOpen}
+            closeModal={closeModal}
+            modalContent={modalContent}
+          ></ImageModal>
         )}
       </section>
     </>
