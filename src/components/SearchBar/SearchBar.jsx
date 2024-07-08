@@ -2,7 +2,7 @@ import css from './SearchBar.module.css';
 
 import toast, { Toaster } from 'react-hot-toast';
 
-export default function SearchBar({ getImages }) {
+export default function SearchBar({ onSubmit }) {
   function handleSubmit(e) {
     e.preventDefault();
     const form = e.target
@@ -17,7 +17,7 @@ export default function SearchBar({ getImages }) {
       });
       return;
     }
-    getImages(topic, 1);
+    onSubmit(topic);
     form.reset()
   }
   return (

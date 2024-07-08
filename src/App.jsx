@@ -1,6 +1,6 @@
 import './App.css';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Grid } from 'react-loader-spinner';
 
 import fetchData from './utilities/fetchData';
@@ -21,33 +21,40 @@ function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState({});
 
-  async function getImages(searchQuery, page) {
-    try {
-      setError(false);
-      setLoading(true);
-      setNoData(false);
-      setLoadMoreBtn(false);
-      setSearchQuery(searchQuery);
-      setPage(page);
-      if (page === 1) {
-        setImages([]);
-      }
-
-      const response = await fetchData(searchQuery, page);
-
-      page > 1
-        ? setImages([...images, ...response.results])
-        : setImages([...response.results]);
-      response.total_pages > page
-        ? setLoadMoreBtn(true)
-        : setLoadMoreBtn(false);
-      response.total > 0 ? setNoData(false) : setNoData(true);
-    } catch (error) {
-      console.log(error, 'error');
-      setError(true);
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+    if (searchQuery === "") {
+      return;
     }
+    async function getImages() {
+      try {
+        setError(false);
+        setLoading(true);
+        setNoData(false);
+        setLoadMoreBtn(false);
+        const response = await fetchData(searchQuery, page);
+        setImages((images)=>{return [...images, ...response.results]});
+        response.total_pages > page
+          ? setLoadMoreBtn(true)
+          : setLoadMoreBtn(false);
+        response.total > 0 ? setNoData(false) : setNoData(true);
+      } catch (error) {
+        console.log(error, 'error');
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    }
+    getImages();
+  }, [page, searchQuery]);
+
+  function onSubmit(topic) {
+    setSearchQuery(topic);
+    setPage(1);
+    setImages([]);
+  }
+
+  function loadMore() {
+    setPage(page + 1);
   }
 
   function openModal(image) {
@@ -61,7 +68,7 @@ function App() {
 
   return (
     <>
-      <SearchBar getImages={getImages}></SearchBar>
+      <SearchBar onSubmit={onSubmit}></SearchBar>
 
       <section className='mainContent'>
         {images.length > 0 && (
@@ -82,9 +89,7 @@ function App() {
         {noData && <p>No data on your request</p>}
         {loadMoreBtn && (
           <LoadMoreBtn
-            getImages={getImages}
-            searchQuery={searchQuery}
-            page={page + 1}
+          onLoadMore={loadMore}
           ></LoadMoreBtn>
         )}
         {isModalOpen && (
